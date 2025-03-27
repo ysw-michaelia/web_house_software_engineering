@@ -1,0 +1,112 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #f0f0f0;
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.media-player {
+    width: 400px;
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    text-align: center;
+    position: relative;
+}
+
+.display {
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.play-pause-btn {
+    width: 60px;
+    height: 60px;
+    background: #e74c3c;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 24px;
+    color: #fff;
+    transition: background 0.3s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.play-pause-btn:hover {
+    background: #c0392b;
+    transform: scale(1.1);
+}
+
+.play-pause-btn.playing::before {
+    content: '❚❚'; /* 暂停符号 */
+}
+
+.play-pause-btn::before {
+    content: '▶'; /* 播放符号 */
+}
+
+.progress-container {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background: #f1c40f;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+.time {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.volume-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.volume {
+    width: 100px;
+    height: 5px;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+}
+
+.volume::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #f1c40f;
+    border-radius: 50%;
+    cursor: pointer;
+}
