@@ -20,7 +20,6 @@ class LampSimulator {
 const lamp = new LampSimulator();
 let lampWindow = null; 
 
-// WebSocket 连接
 const ws = new WebSocket('ws://localhost:8080');
 
 ws.onopen = () => {
@@ -35,14 +34,13 @@ ws.onmessage = (event) => {
             if (!lampWindow || lampWindow.closed) {
                 lampWindow = window.open('lamp.html', 'lampWindow', 'width=400,height=400');
             }
-            lamp.toggleLamp(true); // 只开灯，不重复弹窗
+            lamp.toggleLamp(true); 
         } else if (data.command === 'off') {
-            lamp.toggleLamp(false); // 关灯，但不关闭窗口
+            lamp.toggleLamp(false); 
         }
     }
 };
 
-// 页面关闭时，确保窗口不留存
 window.onbeforeunload = () => {
     if (lampWindow) lampWindow.close();
 };

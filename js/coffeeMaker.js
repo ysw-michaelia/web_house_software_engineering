@@ -22,6 +22,22 @@ class CoffeeMachineSimulator {
         this.updateIndicator();
     }
 
+    createSteamParticle() {
+        const steam = document.createElement('div');
+        steam.className = 'steam-particle';
+    
+        const drift = Math.random() * 20 - 10; 
+        const rotate = Math.random() * 30 - 15; 
+        steam.style.setProperty('--drift', drift);
+        steam.style.setProperty('--rotate', rotate);
+    
+        document.body.appendChild(steam);
+    
+        setTimeout(() => {
+            steam.remove();
+        }, 2000);
+    }
+
     togglePower() {
         this.isPoweredOn = this.powerSwitch.checked;
         if (!this.isPoweredOn) {
@@ -35,13 +51,13 @@ class CoffeeMachineSimulator {
 
     updateIndicator() {
         if (!this.isPoweredOn) {
-            this.indicator.className = 'indicator off'; // 关机状态
+            this.indicator.className = 'indicator off';
         } else if (this.isBrewing) {
-            this.indicator.className = 'indicator busy'; // 冲泡中（红色）
+            this.indicator.className = 'indicator busy'; 
         } else if (this.isReady) {
-            this.indicator.className = 'indicator take'; // 咖啡就绪（黄色）
+            this.indicator.className = 'indicator take'; 
         } else {
-            this.indicator.className = 'indicator ready'; // 就绪（绿色）
+            this.indicator.className = 'indicator ready';
         }
     }
 
@@ -138,8 +154,8 @@ class CoffeeMachineSimulator {
     }
 }
 
-const simulator = new CoffeeMachineSimulator();
+const coffeeMaker = new CoffeeMachineSimulator();
 
 function selectCoffee(type) {
-    simulator.selectCoffee(type);
+    coffeeMaker.selectCoffee(type);
 }
