@@ -9,7 +9,6 @@ Media Player: Play, pause, and control the volume of an audio track with a progr
 WebSocket Integration: Connects to a WebSocket server to register devices and handle on/off commands.
 
 ## Prerequisites
-A server.
 A modern web browser (e.g., Chrome, Firefox).
 A WebSocket server (e.g., running on ws://localhost:8080). See for a sample server.
 
