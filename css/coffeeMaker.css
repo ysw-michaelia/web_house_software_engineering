@@ -268,7 +268,7 @@ input:checked + .slider:before {
     display: none;
     transform: rotate(-70deg);
     transition: left 1s ease, top 1s ease;
-    background-image: url('assets/pics/hand.jpg');
+    background-image: url('../assets/pics/hand.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
