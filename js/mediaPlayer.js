@@ -7,7 +7,7 @@ class MediaPlayer {
         this.progress = document.getElementById('progress');
         this.time = document.getElementById('time');
         this.volume = document.getElementById('volume');
-        this.display = document.getElementById('display');
+        this.display = document.getElementById('mediaPlayerDisplay');
         this.isPlaying = false;
         this.deviceId = null;
 
