@@ -49,6 +49,32 @@ class CoffeeMachineSimulator {
         this.updateIndicator();
     }
 
+    // Method to turn on the coffee machine. If the machine is currently inactive,
+    // it switches the power on, updates its state, and logs that it has been turned on.
+    // Otherwise, it logs that the machine is already on.
+    turnOn() {
+        if (!this.isPoweredOn) {
+            this.powerSwitch.checked = true;
+            this.togglePower();
+            console.log('Coffee machine turned on');
+        } else{
+            console.log('Coffee machine already turned on');
+        }
+    }
+
+    // Method to disable the coffee machine. If the machine is currently active,
+    // it switches the power off, updates its state, and logs that it has been turned off.
+    // Otherwise, it logs that the machine is already disabled.
+    turnOff() {
+        if (this.isPoweredOn) {
+            this.powerSwitch.checked = false;
+            this.togglePower();
+            console.log('Coffee machine turned off');
+        } else {
+            console.log('Coffee machine already turned off');
+        }
+    }
+
     updateIndicator() {
         if (!this.isPoweredOn) {
             this.indicator.className = 'indicator off';
@@ -159,3 +185,40 @@ const coffeeMaker = new CoffeeMachineSimulator();
 function selectCoffee(type) {
     coffeeMaker.selectCoffee(type);
 }
+
+// Establish a WebSocket connection for the coffee maker
+window.ws = new WebSocket('ws://localhost:8080');
+
+let uniqueId = null;
+ws.onopen = () => {
+    // Generate a unique device id for the coffee maker instance
+    uniqueId = 'coffeeMaker-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+    ws.send(JSON.stringify({ type: 'register', deviceId: uniqueId }));
+    console.log('Registered coffee maker with id:', uniqueId);
+};
+
+ws.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    if (data.type === 'command') {
+        if (data.command === 'on') {
+            console.log('Received on command');
+            coffeeMaker.turnOn();
+        } else if (data.command === 'off') {
+            console.log('Received off command');
+            coffeeMaker.turnOff();
+        }
+    }
+};
+
+// Close the WebSocket connection when the window is closed
+window.onbeforeunload = () => {
+    if (ws) {
+        ws.send(JSON.stringify({ type: 'unregister', deviceId: uniqueId }));
+        ws.close();
+    }
+};
+
+// Handle WebSocket errors
+ws.onerror = (error) => {
+    console.error("WebSocket error:", error);
+};
