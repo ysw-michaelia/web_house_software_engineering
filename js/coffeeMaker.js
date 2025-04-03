@@ -1,16 +1,19 @@
+const wsClient = require('./app.js');
+
 class CoffeeMachineSimulator {
     constructor() {
         this.selectedCoffee = null;
         this.isBrewing = false;
         this.isReady = false;
         this.isPoweredOn = true;
+        this.deviceId = null;
         this.display = document.getElementById('display');
         this.status = document.getElementById('status');
         this.coffeeCup1 = document.getElementById('coffeeCup1');
         this.coffeeFill1 = document.getElementById('coffeeFill1');
         this.drip1 = document.getElementById('drip1');
         this.hand = document.getElementById('hand');
-        this.brewSound = document.getElementById('brewSound'); 
+        this.brewSound = document.getElementById('brewSound');
         this.indicator = document.getElementById('indicator');
         this.powerSwitch = document.getElementById('powerSwitch');
         this.options = document.querySelectorAll('.option');
@@ -20,22 +23,33 @@ class CoffeeMachineSimulator {
         this.powerSwitch.addEventListener('change', () => this.togglePower());
 
         this.updateIndicator();
+
+        wsClient.registerDevice('coffee_machine', this);
+    }
+
+    setDeviceId(id) {
+        this.deviceId = id;
+    }
+
+    sendStatus(status) {
+        if (this.deviceId) {
+            wsClient.sendMessage({
+                message_type: 'ack',
+                device_id: this.deviceId,
+                status
+            });
+        }
     }
 
     createSteamParticle() {
         const steam = document.createElement('div');
         steam.className = 'steam-particle';
-    
-        const drift = Math.random() * 20 - 10; 
-        const rotate = Math.random() * 30 - 15; 
+        const drift = Math.random() * 20 - 10;
+        const rotate = Math.random() * 30 - 15;
         steam.style.setProperty('--drift', drift);
         steam.style.setProperty('--rotate', rotate);
-    
         document.body.appendChild(steam);
-    
-        setTimeout(() => {
-            steam.remove();
-        }, 2000);
+        setTimeout(() => steam.remove(), 2000);
     }
 
     togglePower() {
@@ -43,8 +57,10 @@ class CoffeeMachineSimulator {
         if (!this.isPoweredOn) {
             this.resetMachine();
             this.status.textContent = 'Coffee machine is off';
+            this.sendStatus('off');
         } else {
             this.status.textContent = 'Select your coffee';
+            this.sendStatus('on');
         }
         this.updateIndicator();
     }
@@ -54,10 +70,13 @@ class CoffeeMachineSimulator {
     // Otherwise, it logs that the machine is already on.
     turnOn() {
         if (!this.isPoweredOn) {
+            this.isPoweredOn = true;
             this.powerSwitch.checked = true;
-            this.togglePower();
+            this.status.textContent = 'Select your coffee';
+            this.updateIndicator();
+            this.sendStatus('on');
             console.log('Coffee machine turned on');
-        } else{
+        } else {
             console.log('Coffee machine already turned on');
         }
     }
@@ -67,8 +86,12 @@ class CoffeeMachineSimulator {
     // Otherwise, it logs that the machine is already disabled.
     turnOff() {
         if (this.isPoweredOn) {
+            this.isPoweredOn = false;
             this.powerSwitch.checked = false;
-            this.togglePower();
+            this.resetMachine();
+            this.status.textContent = 'Coffee machine is off';
+            this.updateIndicator();
+            this.sendStatus('off');
             console.log('Coffee machine turned off');
         } else {
             console.log('Coffee machine already turned off');
@@ -79,9 +102,9 @@ class CoffeeMachineSimulator {
         if (!this.isPoweredOn) {
             this.indicator.className = 'indicator off';
         } else if (this.isBrewing) {
-            this.indicator.className = 'indicator busy'; 
+            this.indicator.className = 'indicator busy';
         } else if (this.isReady) {
-            this.indicator.className = 'indicator take'; 
+            this.indicator.className = 'indicator take';
         } else {
             this.indicator.className = 'indicator ready';
         }
@@ -97,6 +120,7 @@ class CoffeeMachineSimulator {
         this.hand.style.display = 'none';
         this.brewSound.pause();
         this.options.forEach(opt => opt.classList.remove('selected'));
+        if (this.steamInterval) clearInterval(this.steamInterval);
     }
 
     selectCoffee(type) {
@@ -117,8 +141,7 @@ class CoffeeMachineSimulator {
         this.coffeeFill1.style.height = '0';
 
         let brewTime, fillHeight, color;
-
-        switch(this.selectedCoffee) {
+        switch (this.selectedCoffee) {
             case 'espresso': brewTime = 2000; fillHeight = 30; color = '#4a2c2a'; break;
             case 'latte': brewTime = 3000; fillHeight = 80; color = '#d4a774'; break;
             case 'cappuccino': brewTime = 2500; fillHeight = 70; color = '#c68c53'; break;
@@ -162,11 +185,11 @@ class CoffeeMachineSimulator {
         this.hand.style.top = '410px';
         this.hand.style.transform = 'rotate(-70deg)';
         await new Promise(resolve => setTimeout(resolve, 500));
-        
+
         this.coffeeCup1.style.transform = 'translateY(-50px)';
         this.hand.style.transform = 'translateY(-50px) rotate(-70deg)';
         await new Promise(resolve => setTimeout(resolve, 500));
-        
+
         this.hand.style.left = '340px';
         this.hand.style.transform = 'translateY(-50px) rotate(-70deg)';
         this.coffeeCup1.style.transform = 'translateX(150px) translateY(-50px)';
@@ -185,40 +208,3 @@ const coffeeMaker = new CoffeeMachineSimulator();
 function selectCoffee(type) {
     coffeeMaker.selectCoffee(type);
 }
-
-// Establish a WebSocket connection for the coffee maker
-window.ws = new WebSocket('ws://localhost:8080');
-
-let uniqueId = null;
-ws.onopen = () => {
-    // Generate a unique device id for the coffee maker instance
-    uniqueId = 'coffeeMaker-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
-    ws.send(JSON.stringify({ type: 'register', deviceId: uniqueId }));
-    console.log('Registered coffee maker with id:', uniqueId);
-};
-
-ws.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    if (data.type === 'command') {
-        if (data.command === 'on') {
-            console.log('Received on command');
-            coffeeMaker.turnOn();
-        } else if (data.command === 'off') {
-            console.log('Received off command');
-            coffeeMaker.turnOff();
-        }
-    }
-};
-
-// Close the WebSocket connection when the window is closed
-window.onbeforeunload = () => {
-    if (ws) {
-        ws.send(JSON.stringify({ type: 'unregister', deviceId: uniqueId }));
-        ws.close();
-    }
-};
-
-// Handle WebSocket errors
-ws.onerror = (error) => {
-    console.error("WebSocket error:", error);
-};

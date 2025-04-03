@@ -1,8 +1,36 @@
+const wsClient = require('./app.js');
+
 class LampSimulator {
     constructor() {
         this.isOn = false;
+        this.deviceId = null;
         this.lampShade = document.getElementById('lampShade');
         this.light = document.getElementById('light');
+        this.toggleBtn = document.getElementById('lampToggleBtn');
+
+        if (this.toggleBtn) {
+            this.toggleBtn.addEventListener('click', () => {
+                this.isOn ? this.turnOff() : this.turnOn();
+            });
+        } else {
+            console.error('Lamp toggle button not found');
+        }
+
+        wsClient.registerDevice('lamp', this);
+    }
+
+    setDeviceId(id) {
+        this.deviceId = id;
+    }
+
+    sendStatus(status) {
+        if (this.deviceId) {
+            wsClient.sendMessage({
+                message_type: 'ack',
+                device_id: this.deviceId,
+                status
+            });
+        }
     }
 
     toggleLamp(state) {
@@ -15,32 +43,26 @@ class LampSimulator {
             this.light.classList.remove('on');
         }
     }
+
+    turnOn() {
+        if (!this.isOn) {
+            this.toggleLamp(true);
+            this.sendStatus('on'); 
+            console.log('Lamp turned on');
+        } else {
+            console.log('Lamp already on');
+        }
+    }
+
+    turnOff() {
+        if (this.isOn) {
+            this.toggleLamp(false);
+            this.sendStatus('off');
+            console.log('Lamp turned off');
+        } else {
+            console.log('Lamp already off');
+        }
+    }
 }
 
 const lamp = new LampSimulator();
-let lampWindow = null; 
-
-const ws = new WebSocket('ws://localhost:8080');
-
-ws.onopen = () => {
-    console.log('Connected to WebSocket server');
-    ws.send(JSON.stringify({ type: 'register', deviceId: 'lamp1' }));
-};
-
-ws.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    if (data.type === 'command') {
-        if (data.command === 'on') {
-            if (!lampWindow || lampWindow.closed) {
-                lampWindow = window.open('lamp.html', 'lampWindow', 'width=400,height=400');
-            }
-            lamp.toggleLamp(true); 
-        } else if (data.command === 'off') {
-            lamp.toggleLamp(false); 
-        }
-    }
-};
-
-window.onbeforeunload = () => {
-    if (lampWindow) lampWindow.close();
-};
