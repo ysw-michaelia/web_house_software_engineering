@@ -61,22 +61,27 @@ const player = new MediaPlayer();
 let playerWindow = null;
 
 const ws = new WebSocket('ws://localhost:8080');
+// Generate a unique device id for the media player instance
+const uniqueId = 'mediaPlayer-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
 
 ws.onopen = () => {
     console.log('Connected to WebSocket server');
-    ws.send(JSON.stringify({ type: 'register', deviceId: 'mediaPlayer' }));
+    ws.send(JSON.stringify({ type: 'register', deviceId: uniqueId }));
+    console.log('Registered media player with id:', uniqueId);
 };
 
 ws.onmessage = (event) => {
     const data = JSON.parse(event.data);
     if (data.type === 'command') {
         if (data.command === 'on') {
+            console.log('Received on command');
             if (!playerWindow || playerWindow.closed) {
                 playerWindow = window.open('player.html', 'playerWindow', 'width=500,height=500');
             }
             player.audio.play();
             player.isPlaying = true;
         } else if (data.command === 'off') {
+            console.log('Received off command');
             player.audio.pause();
             player.isPlaying = false;
         }

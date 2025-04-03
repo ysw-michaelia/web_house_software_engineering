@@ -187,7 +187,7 @@ function selectCoffee(type) {
 }
 
 // Establish a WebSocket connection for the coffee maker
-window.ws = new WebSocket('ws://localhost:8080');
+const ws = new WebSocket('ws://localhost:8080');
 
 let uniqueId = null;
 ws.onopen = () => {
