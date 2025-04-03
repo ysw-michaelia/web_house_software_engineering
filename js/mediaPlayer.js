@@ -1,5 +1,3 @@
-const wsClient = require('./app.js');
-
 class MediaPlayer {
     constructor() {
         this.audio = document.getElementById('audio');
@@ -12,8 +10,7 @@ class MediaPlayer {
         this.deviceId = null;
 
         this.initializeEventListeners();
-
-        wsClient.registerDevice('mediaplayer', this);
+        window.wsClient.registerDevice('mediaplayer', this);
     }
 
     setDeviceId(id) {
@@ -105,4 +102,4 @@ class MediaPlayer {
     }
 }
 
-const player = new MediaPlayer();
+new MediaPlayer();

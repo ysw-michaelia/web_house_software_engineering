@@ -1,5 +1,3 @@
-const WebSocket = require('ws');
-
 const ws = new WebSocket('ws://localhost:8080');
 
 const devices = {
@@ -10,23 +8,23 @@ const devices = {
 
 const deviceIds = {};
 
-ws.on('open', () => {
+ws.onopen = () => {
     console.log('Connected to server');
     Object.keys(devices).forEach(deviceType => {
         if (devices[deviceType]) {
             const registerMessage = {
                 message_type: 'register',
                 device_type: deviceType,
-                pin: 1 
+                pin: 1
             };
             ws.send(JSON.stringify(registerMessage));
         }
     });
-});
+};
 
-ws.on('message', (message) => {
+ws.onmessage = (event) => {
     try {
-        const data = JSON.parse(message);
+        const data = JSON.parse(event.data);
         console.log('Received:', data);
 
         if (data.message_type === 'registered') {
@@ -55,18 +53,17 @@ ws.on('message', (message) => {
     } catch (error) {
         console.error('Error parsing message:', error);
     }
-});
+};
 
-ws.on('close', () => {
+ws.onclose = () => {
     console.log('Disconnected from server');
-});
+};
 
-ws.on('error', (error) => {
+ws.onerror = (error) => {
     console.error('WebSocket error:', error);
-});
+};
 
-// interface for the devices
-module.exports = {
+window.wsClient = {
     ws,
     sendMessage: (msg) => ws.send(JSON.stringify(msg)),
     registerDevice: (type, instance) => {

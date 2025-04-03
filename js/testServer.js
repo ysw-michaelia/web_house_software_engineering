@@ -11,7 +11,7 @@ wss.on('connection', (ws) => {
         console.log('Received:', data);
 
         if (data.message_type === 'register') {
-            const deviceId = Date.now(); // 简单生成唯一 ID
+            const deviceId = Date.now();
             devices.set(deviceId, ws);
             ws.send(JSON.stringify({
                 message_type: 'registered',
@@ -36,7 +36,6 @@ wss.on('connection', (ws) => {
     });
 });
 
-// 模拟发送命令
 function sendCommand(deviceId, status) {
     const ws = devices.get(deviceId);
     if (ws) {
@@ -51,8 +50,7 @@ function sendCommand(deviceId, status) {
 
 console.log('WebSocket server running on ws://localhost:8080');
 
-// 示例：5秒后发送命令（测试用）
 setTimeout(() => {
-    const deviceId = [...devices.keys()][0]; // 获取第一个设备
+    const deviceId = [...devices.keys()][0]; 
     if (deviceId) sendCommand(deviceId, 'on');
 }, 5000);

@@ -1,5 +1,3 @@
-const wsClient = require('./app.js');
-
 class LampSimulator {
     constructor() {
         this.isOn = false;
@@ -16,7 +14,7 @@ class LampSimulator {
             console.error('Lamp toggle button not found');
         }
 
-        wsClient.registerDevice('lamp', this);
+        window.wsClient.registerDevice('lamp', this);
     }
 
     setDeviceId(id) {
@@ -25,7 +23,7 @@ class LampSimulator {
 
     sendStatus(status) {
         if (this.deviceId) {
-            wsClient.sendMessage({
+            window.wsClient.sendMessage({
                 message_type: 'ack',
                 device_id: this.deviceId,
                 status
@@ -47,7 +45,7 @@ class LampSimulator {
     turnOn() {
         if (!this.isOn) {
             this.toggleLamp(true);
-            this.sendStatus('on'); 
+            this.sendStatus('on');
             console.log('Lamp turned on');
         } else {
             console.log('Lamp already on');
@@ -65,4 +63,4 @@ class LampSimulator {
     }
 }
 
-const lamp = new LampSimulator();
+new LampSimulator();

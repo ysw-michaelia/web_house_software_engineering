@@ -1,5 +1,3 @@
-const wsClient = require('./app.js');
-
 class CoffeeMachineSimulator {
     constructor() {
         this.selectedCoffee = null;
@@ -23,8 +21,7 @@ class CoffeeMachineSimulator {
         this.powerSwitch.addEventListener('change', () => this.togglePower());
 
         this.updateIndicator();
-
-        wsClient.registerDevice('coffee_machine', this);
+        window.wsClient.registerDevice('coffee_machine', this);
     }
 
     setDeviceId(id) {
@@ -203,8 +200,4 @@ class CoffeeMachineSimulator {
     }
 }
 
-const coffeeMaker = new CoffeeMachineSimulator();
-
-function selectCoffee(type) {
-    coffeeMaker.selectCoffee(type);
-}
+new CoffeeMachineSimulator();
