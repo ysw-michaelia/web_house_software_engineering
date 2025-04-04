@@ -27,7 +27,14 @@ ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
         console.log('Received:', data);
 
+        if (!data.message_type) {
+            throw new Error("Missing message_type");
+        }
+
         if (data.message_type === 'registered') {
+            if (!data.device_id) {
+                throw new Error("Missing device_id");
+            }
             const deviceId = data.device_id;
             const deviceType = Object.keys(devices).find(type => !deviceIds[type] && devices[type]);
             if (deviceType) {
@@ -39,6 +46,12 @@ ws.onmessage = (event) => {
 
         if (data.message_type === 'device_update') {
             const { device_id, status } = data;
+
+            if (!device_id || !status) {
+                console.warn("Missing device_id or status in device_update message");
+                return;
+            }
+
             for (const [type, device] of Object.entries(devices)) {
                 if (device && deviceIds[type] === device_id) {
                     if (status === 'on') {

@@ -1,3 +1,8 @@
+/*
+    * Media Player Class
+    * This class handles the media player functionality including play/pause, volume control, and progress tracking.
+    * It also communicates with a WebSocket server to send status updates.
+*/
 class MediaPlayer {
     constructor() {
         this.audio = document.getElementById('audio');

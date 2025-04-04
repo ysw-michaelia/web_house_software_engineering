@@ -1,3 +1,9 @@
+/*
+    * Lamp Simulator
+    * This script simulates a lamp with a toggle button.
+    * It handles the lamp's on/off state and communicates with a WebSocket server to send status updates.
+    * The lamp's appearance changes based on its state.
+*/
 class LampSimulator {
     constructor() {
         this.isOn = false;
