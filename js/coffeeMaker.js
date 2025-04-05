@@ -1,3 +1,9 @@
+/*
+    * Coffee Machine Simulator
+    * This class simulates a coffee machine with various functionalities.
+    * It allows users to select different types of coffee, brew them, and take the coffee.
+    * The class also handles the power state of the machine and communicates with a WebSocket server.
+*/
 class CoffeeMachineSimulator {
     constructor() {
         this.selectedCoffee = null;
@@ -23,11 +29,12 @@ class CoffeeMachineSimulator {
         this.updateIndicator();
         window.wsClient.registerDevice('coffee_machine', this);
     }
-
+    // Method to set the device ID for the coffee machine. It assigns the provided ID to the deviceId property.
     setDeviceId(id) {
         this.deviceId = id;
     }
-
+    // Method to send the status of the coffee machine to the server. It checks if the deviceId is set and sends a message with the status.
+    // The message includes the device ID and the status (on/off).
     sendStatus(status) {
         if (this.deviceId) {
             wsClient.sendMessage({
@@ -38,6 +45,8 @@ class CoffeeMachineSimulator {
         }
     }
 
+    // Method to create a steam particle effect. It creates a div element with the class 'steam-particle',
+    // sets random drift and rotation values, appends it to the document body, and removes it after 2 seconds. 
     createSteamParticle() {
         const steam = document.createElement('div');
         steam.className = 'steam-particle';
@@ -48,7 +57,8 @@ class CoffeeMachineSimulator {
         document.body.appendChild(steam);
         setTimeout(() => steam.remove(), 2000);
     }
-
+    // Method to toggle the power of the coffee machine. It checks the state of the power switch and updates the machine's state accordingly.
+    // If the machine is powered off, it resets the machine and updates the status text.
     togglePower() {
         this.isPoweredOn = this.powerSwitch.checked;
         if (!this.isPoweredOn) {
@@ -95,18 +105,31 @@ class CoffeeMachineSimulator {
         }
     }
 
+    // Method to update the indicator light based on the current state of the coffee machine.
+    // It checks if the machine is powered on, brewing, ready, or idle and updates the indicator's class accordingly.
     updateIndicator() {
-        if (!this.isPoweredOn) {
-            this.indicator.className = 'indicator off';
-        } else if (this.isBrewing) {
-            this.indicator.className = 'indicator busy';
-        } else if (this.isReady) {
-            this.indicator.className = 'indicator take';
-        } else {
-            this.indicator.className = 'indicator ready';
+        try {
+            // Check if the indicator element exists before trying to update it
+            if (!this.indicator){
+                throw new Error('Indicator element not found');
+            }
+            
+            if (!this.isPoweredOn) {
+                this.indicator.className = 'indicator off';
+            } else if (this.isBrewing) {
+                this.indicator.className = 'indicator busy';
+            } else if (this.isReady) {
+                this.indicator.className = 'indicator take';
+            } else {
+                this.indicator.className = 'indicator ready';
+            }
+        } catch (error) {
+            console.error('Error updating indicator:', error);
         }
     }
 
+    // Method to reset the coffee machine's state. It sets the brewing and ready states to false,
+    // clears the selected coffee, hides the coffee cup and fill, and stops the brewing sound.
     resetMachine() {
         this.isBrewing = false;
         this.isReady = false;
@@ -119,7 +142,8 @@ class CoffeeMachineSimulator {
         this.options.forEach(opt => opt.classList.remove('selected'));
         if (this.steamInterval) clearInterval(this.steamInterval);
     }
-
+    // Method to handle coffee selection. It checks if the machine is powered on and not brewing or ready,
+    // sets the selected coffee type, updates the status text, and starts the brewing process.
     selectCoffee(type) {
         if (!this.isPoweredOn || this.isBrewing || this.isReady) return;
         this.selectedCoffee = type;
@@ -128,7 +152,8 @@ class CoffeeMachineSimulator {
         event.target.classList.add('selected');
         this.startBrewing();
     }
-
+    // Method to start the brewing process. It checks if a coffee type is selected and if the machine is not already brewing.
+    // If valid, it sets the brewing state to true, updates the indicator, and starts the brewing sound.
     async startBrewing() {
         if (!this.selectedCoffee || this.isBrewing) return;
         this.isBrewing = true;
@@ -170,7 +195,8 @@ class CoffeeMachineSimulator {
         this.updateIndicator();
         this.coffeeCup1.style.cursor = 'pointer';
     }
-
+    // Method to handle the action of taking the coffee. It checks if the machine is ready,
+    // sets the ready state to false, updates the indicator, and animates the hand taking the coffee.
     async takeCoffee() {
         if (!this.isReady) return;
         this.isReady = false;

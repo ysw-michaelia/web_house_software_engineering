@@ -10,18 +10,30 @@
     <div class="media-player" id="mediaPlayerContainer">
       <div class="display" id="mediaPlayerDisplay">No song playing</div>
       <div class="controls">
+        <div class="buttons">
+          <button class="prev-btn" id="prevTrackBtn"></button>
           <button class="play-pause-btn" id="playPauseBtn"></button>
-          <div class="progress-container">
-              <div class="progress" id="progress"></div>
-          </div>
-          <div class="time" id="time">0:00 / 0:00</div>
-          <div class="volume-container">
-              <span>Volume</span>
-              <input type="range" min="0" max="1" step="0.01" value="1" class="volume" id="volume">
-          </div>
+          <button class="next-btn" id="nextTrackBtn"></button>
+        </div>
+        <div class="progress-container">
+          <div class="progress" id="progress"></div>
+        </div>
+        <div class="time" id="time">0:00 / 0:00</div>
+        <div class="volume-container">
+          <span>Volume</span>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value="1"
+            class="volume"
+            id="volume"
+          />
+        </div>
       </div>
-  </div>
-  <audio id="audio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+    </div>
+    <audio id="audio"></audio>
 
     <!-- Scripts for Device Interactions -->
     <script src="js/mediaPlayer.js"></script>
