@@ -20,4 +20,4 @@ A WebSocket server (e.g., running on ws://localhost:8080). See for a sample serv
 3. Interact with Devices:
     Coffee Machine: Toggle the power switch and select a coffee type to brew.
     Lamp: Click "Turn On/Off" to toggle the lamp.
-    Media Player: Click the play/pause button to control audio playback.
+    Media Player: Click the play/pause button to control audio playback. Click Next/prev to navigate playlist. 
