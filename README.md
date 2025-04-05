@@ -10,7 +10,7 @@ WebSocket Integration: Connects to a WebSocket server to register devices and ha
 
 ## Prerequisites
 A modern web browser (e.g., Chrome, Firefox).
-A WebSocket server (e.g., running on ws://localhost:8080). See for a sample server.
+A WebSocket server (e.g., running on ws://localhost:8080).
 
 ## Usage
 1. Run a WebSocket Server:
