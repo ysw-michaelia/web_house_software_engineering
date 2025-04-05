@@ -64,6 +64,44 @@ body {
 .play-pause-btn::before {
     content: '▶'; /* 播放符号 */
 }
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;  
+}
+
+/* Style for the previous and next buttons */
+.prev-btn,
+.next-btn {
+    width: 40px;
+    height: 40px;
+    background-color: #3498db; 
+    border: none;
+    border-radius: 50%; 
+    cursor: pointer;
+    font-size: 20px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s, transform 0.2s;
+}
+
+
+.prev-btn::before {
+    content: '◄';  
+}
+
+.next-btn::before {
+    content: '►';  
+}
+
+.prev-btn:hover,
+.next-btn:hover {
+    background-color: #2980b9;
+    transform: scale(1.1);
+}
 
 .progress-container {
     width: 100%;

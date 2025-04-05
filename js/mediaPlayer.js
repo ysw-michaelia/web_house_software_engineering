@@ -11,8 +11,19 @@ class MediaPlayer {
         this.time = document.getElementById('time');
         this.volume = document.getElementById('volume');
         this.display = document.getElementById('mediaPlayerDisplay');
+        this.nextTrackBtn = document.getElementById('nextTrackBtn');
+        this.prevTrackBtn = document.getElementById('prevTrackBtn');
         this.isPlaying = false;
         this.deviceId = null;
+
+        // Simulated playlist and track index
+        this.playlist = [
+            "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+            "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+            "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+        ];
+        this.currentTrackIndex = 0;
+        this.audio.src = this.playlist[this.currentTrackIndex];
 
         this.initializeEventListeners();
         window.wsClient.registerDevice('mediaplayer', this);
@@ -37,6 +48,10 @@ class MediaPlayer {
         this.audio.addEventListener('timeupdate', () => this.updateProgress());
         this.audio.addEventListener('ended', () => this.resetPlayer());
         this.volume.addEventListener('input', (e) => this.setVolume(e.target.value));
+
+        // new event listener for track change
+        this.nextTrackBtn.addEventListener('click', () => this.nextTrack());
+        this.prevTrackBtn.addEventListener('click', () => this.prevTrack());
     }
 
     togglePlayPause() {
@@ -48,7 +63,7 @@ class MediaPlayer {
         } else {
             this.audio.play().catch(error => console.error('Error:', error));
             this.playPauseBtn.classList.add('playing');
-            this.display.textContent = 'Playing: Sample Song';
+            this.display.textContent = `Playing: Track ${this.currentTrackIndex + 1}`;
             this.isPlaying = true;
             this.sendStatus('on');
         }
@@ -85,7 +100,7 @@ class MediaPlayer {
         if (!this.isPlaying) {
             this.audio.play().catch(error => console.error('Error:', error));
             this.playPauseBtn.classList.add('playing');
-            this.display.textContent = 'Playing: Sample Song';
+            this.display.textContent = `Playing: Track ${this.currentTrackIndex + 1}`;
             this.isPlaying = true;
             this.sendStatus('on');
             console.log('Media player turned on');
@@ -104,6 +119,36 @@ class MediaPlayer {
         } else {
             console.log('Media player already off');
         }
+    }
+
+    // Method to move to the next track
+    nextTrack() {
+        if (this.currentTrackIndex < this.playlist.length - 1) {
+            this.currentTrackIndex++;
+        } else {
+            // Loop back to the first track if at the end
+            this.currentTrackIndex = 0;
+        }
+        this.audio.src = this.playlist[this.currentTrackIndex];
+        this.audio.play().catch(error => console.error('Error:', error));
+        this.display.textContent = `Playing: Track ${this.currentTrackIndex + 1}`;
+        this.sendStatus('nextTrack');
+        console.log("Switched to next track, index:", this.currentTrackIndex);
+    }
+
+    // Method to move to the previous track 
+    prevTrack() {
+        if (this.currentTrackIndex > 0) {
+            this.currentTrackIndex--;
+        } else {
+            // Loop back to the last track if at the beginning
+            this.currentTrackIndex = this.playlist.length - 1;
+        }
+        this.audio.src = this.playlist[this.currentTrackIndex];
+        this.audio.play().catch(error => console.error('Error:', error));
+        this.display.textContent = `Playing: Track ${this.currentTrackIndex + 1}`;
+        this.sendStatus('prevTrack');
+        console.log("Switched to previous track, index:", this.currentTrackIndex);
     }
 }
 
