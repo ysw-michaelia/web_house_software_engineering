@@ -1,80 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Device Simulator</title>
-    <link rel="stylesheet" href="css/lamp.css">
-    <link rel="stylesheet" href="css/coffeeMaker.css">
-    <link rel="stylesheet" href="css/mediaPlayer.css">
-</head>
-<body>
+    <link rel="stylesheet" href="css/lamp.css" />
+    <link rel="stylesheet" href="css/coffeeMaker.css" />
+    <link rel="stylesheet" href="css/mediaPlayer.css" />
+  </head>
+  <body>
     <!-- Main container for all devices -->
     <div class="device-container">
-        <!-- Lamp Device -->
-        <div class="lamp-container" id="lampContainer">
-            <div class="lamp-base">
-                <div class="lamp-pole"></div>
-                <div class="lamp-shade" id="lampShade"></div>
-                <div class="light" id="light"></div>
-            </div>
-            <button class="button" id="lampToggleBtn">Turn On/Off</button>
+      <!-- Lamp Device -->
+      <div class="lamp-container" id="lampContainer">
+        <div class="lamp-base">
+          <div class="lamp-pole"></div>
+          <div class="lamp-shade" id="lampShade"></div>
+          <div class="light" id="light"></div>
         </div>
+        <button class="button" id="lampToggleBtn">Turn On/Off</button>
+      </div>
 
-        <!-- Coffee Maker Device -->
-        <div class="coffee-machine" id="coffeeMachineContainer">
-            <div class="bean-hopper">
-                <div class="controls">
-                    <div class="indicator" id="indicator"></div>
-                    <label class="power-switch">
-                        <input type="checkbox" id="powerSwitch" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-            </div>
-            <div class="display" id="display">
-                <div class="options" id="options">
-                    <div class="option" onclick="selectCoffee('espresso')">Espresso</div>
-                    <div class="option" onclick="selectCoffee('latte')">Latte</div>
-                    <div class="option" onclick="selectCoffee('cappuccino')">Cappuccino</div>
-                    <div class="option" onclick="selectCoffee('americano')">Americano</div>
-                    <div class="option" onclick="selectCoffee('mocha')">Mocha</div>
-                    <div class="option" onclick="selectCoffee('macchiato')">Macchiato</div>
-                    <div class="option" onclick="selectCoffee('flatwhite')">Flat White</div>
-                    <div class="option" onclick="selectCoffee('ristretto')">Ristretto</div>
-                </div>
-                <div class="status-bar" id="status">Select your coffee</div>
-            </div>
-            <div class="nozzles">
-                <div class="nozzle"></div>
-            </div>
-            <div class="coffee-cups">
-                <div id="coffeeCup1" class="coffee-cup">
-                    <div id="coffeeFill1" class="coffee-fill"></div>
-                </div>
-            </div>
-            <div id="drip1" class="drip"></div>
-            <div id="hand" class="hand"></div>
-            <div class="tray"></div>
-            <audio id="brewSound" src="assets/sound_effect/coffe_machine.mp3" preload="auto"></audio>
+      <!-- Coffee Maker Device -->
+      <div class="coffee-machine" id="coffeeMachineContainer">
+        <div class="bean-hopper">
+          <div class="controls">
+            <div class="indicator" id="indicator"></div>
+            <label class="power-switch">
+              <input type="checkbox" id="powerSwitch" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
         </div>
+        <div class="display" id="display">
+          <div class="options" id="options">
+            <div class="option" onclick="selectCoffee('espresso')">
+              Espresso
+            </div>
+            <div class="option" onclick="selectCoffee('latte')">Latte</div>
+            <div class="option" onclick="selectCoffee('cappuccino')">
+              Cappuccino
+            </div>
+            <div class="option" onclick="selectCoffee('americano')">
+              Americano
+            </div>
+            <div class="option" onclick="selectCoffee('mocha')">Mocha</div>
+            <div class="option" onclick="selectCoffee('macchiato')">
+              Macchiato
+            </div>
+            <div class="option" onclick="selectCoffee('flatwhite')">
+              Flat White
+            </div>
+            <div class="option" onclick="selectCoffee('ristretto')">
+              Ristretto
+            </div>
+          </div>
+          <div class="status-bar" id="status">Select your coffee</div>
+        </div>
+        <div class="nozzles">
+          <div class="nozzle"></div>
+        </div>
+        <div class="coffee-cups">
+          <div id="coffeeCup1" class="coffee-cup">
+            <div id="coffeeFill1" class="coffee-fill"></div>
+          </div>
+        </div>
+        <div id="drip1" class="drip"></div>
+        <div id="hand" class="hand"></div>
+        <div class="tray"></div>
+        <audio
+          id="brewSound"
+          src="assets/sound_effect/coffe_machine.mp3"
+          preload="auto"
+        ></audio>
+      </div>
 
-        <!-- Media Player Device -->
-        <div class="media-player" id="mediaPlayerContainer">
-            <div class="display" id="mediaPlayerDisplay">No song playing</div>
-            <div class="controls">
-                <button class="play-pause-btn" id="playPauseBtn"></button>
-                <div class="progress-container">
-                    <div class="progress" id="progress"></div>
-                </div>
-                <div class="time" id="time">0:00 / 0:00</div>
-                <div class="volume-container">
-                    <span>Volume</span>
-                    <input type="range" min="0" max="1" step="0.01" value="1" class="volume" id="volume">
-                </div>
-            </div>
+      <!-- Media Player Device -->
+      <div class="media-player" id="mediaPlayerContainer">
+        <div class="display" id="mediaPlayerDisplay">No song playing</div>
+        <div class="controls">
+          <div class="buttons">
+            <button class="prev-btn" id="prevTrackBtn"></button>
+            <button class="play-pause-btn" id="playPauseBtn"></button>
+            <button class="next-btn" id="nextTrackBtn"></button>
+          </div>
+          <div class="progress-container">
+            <div class="progress" id="progress"></div>
+          </div>
+          <div class="time" id="time">0:00 / 0:00</div>
+          <div class="volume-container">
+            <span>Volume</span>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value="1"
+              class="volume"
+              id="volume"
+            />
+          </div>
         </div>
-        <audio id="audio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+      </div>
+      <audio id="audio"></audio>
     </div>
 
     <!-- Scripts for Device Interactions -->
@@ -82,5 +110,5 @@
     <script src="js/lamp.js"></script>
     <script src="js/coffeeMaker.js"></script>
     <script src="js/mediaPlayer.js"></script>
-</body>
+  </body>
 </html>
