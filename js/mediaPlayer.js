@@ -8,6 +8,7 @@ class MediaPlayer {
         this.audio = document.getElementById('audio');
         this.playPauseBtn = document.getElementById('playPauseBtn');
         this.progress = document.getElementById('progress');
+        this.progressContainer = document.getElementById('progressContainer');
         this.time = document.getElementById('time');
         this.volume = document.getElementById('volume');
         this.display = document.getElementById('mediaPlayerDisplay');
@@ -52,6 +53,13 @@ class MediaPlayer {
         // new event listener for track change
         this.nextTrackBtn.addEventListener('click', () => this.nextTrack());
         this.prevTrackBtn.addEventListener('click', () => this.prevTrack());
+
+        // progress bar
+        if (this.progressContainer) {
+            this.progressContainer.addEventListener('click', (e) => this.seek(e));
+        } else {
+            console.error('Progress container not found');
+        }
     }
 
     togglePlayPause() {
@@ -132,6 +140,8 @@ class MediaPlayer {
         this.audio.src = this.playlist[this.currentTrackIndex];
         this.audio.play().catch(error => console.error('Error:', error));
         this.display.textContent = `Playing: Track ${this.currentTrackIndex + 1}`;
+        this.isPlaying = true;
+        this.playPauseBtn.classList.add('playing');
         this.sendStatus('nextTrack');
         console.log("Switched to next track, index:", this.currentTrackIndex);
     }
@@ -147,8 +157,23 @@ class MediaPlayer {
         this.audio.src = this.playlist[this.currentTrackIndex];
         this.audio.play().catch(error => console.error('Error:', error));
         this.display.textContent = `Playing: Track ${this.currentTrackIndex + 1}`;
+        this.isPlaying = true;
+        this.playPauseBtn.classList.add('playing');
         this.sendStatus('prevTrack');
         console.log("Switched to previous track, index:", this.currentTrackIndex);
+    }
+
+    // Seeks to a specific time in the audio based on a click position within the progress container.
+    // Calculates the target time using the click's relative position and updates the audio's current time.
+    seek(event) {
+        if (!this.audio.duration) return;
+        const rect = this.progressContainer.getBoundingClientRect();
+        const clickX = event.clientX - rect.left;
+        const width = rect.width;
+        const seekPercent = clickX / width;
+        const seekTime = seekPercent * this.audio.duration;
+        this.audio.currentTime = seekTime;
+        console.log(`Seek to ${seekTime.toFixed(2)} seconds`);
     }
 }
 
