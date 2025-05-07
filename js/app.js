@@ -11,9 +11,9 @@ const deviceIds = {};
 
 // Define one unique pin per device type
 const deviceConfigs = [
-    { type: 'light',           pin: 7 },
-    { type: 'coffee_machine', pin: 8 },
-    { type: 'mediaplayer',    pin: 9 }
+    { type: 'light',           pin: 51 },
+    { type: 'coffee_machine', pin: 52 },
+    { type: 'mediaplayer',    pin: 53}
   ];
 
 ws.onopen = () => {
