@@ -9,7 +9,7 @@ wss.on('connection', (ws) => {
     ws.on('message', (message) => {
         const data = JSON.parse(message);
         console.log('Received:', data);
-
+        console.log(new Date().toISOString());
         if (data.message_type === 'register') {
             const deviceId = Date.now();
             devices.set(deviceId, ws);

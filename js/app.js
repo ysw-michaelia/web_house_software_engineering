@@ -8,17 +8,28 @@ const devices = {
 
 const deviceIds = {};
 
+
+// Define one unique pin per device type
+const deviceConfigs = [
+    { type: 'lamp',           pin: 7 },
+    { type: 'coffee_machine', pin: 8 },
+    { type: 'mediaplayer',    pin: 9 }
+  ];
+
 ws.onopen = () => {
-    console.log('Connected to server');
-    Object.keys(devices).forEach(deviceType => {
-        if (devices[deviceType]) {
+    deviceConfigs.forEach((cfg, idx) => {
+        setTimeout(() => {
+          if (devices[cfg.type]) {
             const registerMessage = {
                 message_type: 'register',
-                device_type: deviceType,
-                pin: 1
+                device_type:  cfg.type,
+                pin:          cfg.pin
             };
             ws.send(JSON.stringify(registerMessage));
-        }
+          } else {
+            console.warn(`No instance for '${cfg.type}', skipping registration`);
+          }
+        }, idx * 1000);
     });
 };
 
@@ -81,11 +92,17 @@ window.wsClient = {
     sendMessage: (msg) => ws.send(JSON.stringify(msg)),
     registerDevice: (type, instance) => {
         devices[type] = instance;
+        const cfg = deviceConfigs.find(c => c.type === type);
+        if (!cfg) {
+        console.error(`registerDevice: no pin mapping for type '${type}'`);
+        return;
+        }
+        // If socket already open, register immediately
         if (ws.readyState === WebSocket.OPEN) {
             ws.send(JSON.stringify({
                 message_type: 'register',
-                device_type: type,
-                pin: 1
+                device_type:  type,
+                pin:          cfg.pin
             }));
         }
     }
