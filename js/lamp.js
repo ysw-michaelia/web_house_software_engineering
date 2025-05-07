@@ -20,7 +20,7 @@ class LampSimulator {
             console.error('Lamp toggle button not found');
         }
 
-        window.wsClient.registerDevice('lamp', this);
+        window.wsClient.registerDevice('light', this);
     }
 
     setDeviceId(id) {

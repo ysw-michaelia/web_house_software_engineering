@@ -11,7 +11,7 @@ const deviceIds = {};
 
 // Define one unique pin per device type
 const deviceConfigs = [
-    { type: 'lamp',           pin: 7 },
+    { type: 'light',           pin: 7 },
     { type: 'coffee_machine', pin: 8 },
     { type: 'mediaplayer',    pin: 9 }
   ];
@@ -29,7 +29,7 @@ ws.onopen = () => {
           } else {
             console.warn(`No instance for '${cfg.type}', skipping registration`);
           }
-        }, idx * 1000);
+        }, idx * 500);  // staggered registration by 500ms
     });
 };
 
