@@ -1,8 +1,8 @@
 const ws = new WebSocket('ws://localhost:8080');
 
 const devices = {
+    light: null,
     coffee_machine: null,
-    lamp: null,
     mediaplayer: null
 };
 
@@ -66,11 +66,9 @@ ws.onmessage = (event) => {
                 if (device && deviceIds[type] === device_id) {
                     if (status === 'on') {
                         device.turnOn();
-                        // 显示设备弹窗
                         document.getElementById(`${type}-popup`).classList.add('show');
                     } else if (status === 'off') {
                         device.turnOff();
-                        // 不关闭弹窗
                     }
                     break;
                 }
