@@ -74,6 +74,7 @@ class MediaPlayer {
             this.display.textContent = `Playing: Track ${this.currentTrackIndex + 1}`;
             this.isPlaying = true;
             this.sendStatus('on');
+            document.getElementById('mediaplayer-popup').classList.add('show');
         }
     }
 
@@ -111,6 +112,7 @@ class MediaPlayer {
             this.display.textContent = `Playing: Track ${this.currentTrackIndex + 1}`;
             this.isPlaying = true;
             this.sendStatus('on');
+            document.getElementById('mediaplayer-popup').classList.add('show');
             console.log('Media player turned on');
         } else {
             console.log('Media player already on');

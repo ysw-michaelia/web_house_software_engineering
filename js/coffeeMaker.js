@@ -54,7 +54,7 @@ class CoffeeMachineSimulator {
         const rotate = Math.random() * 30 - 15;
         steam.style.setProperty('--drift', drift);
         steam.style.setProperty('--rotate', rotate);
-        document.body.appendChild(steam);
+        document.getElementById('coffee_machine-popup').appendChild(steam);
         setTimeout(() => steam.remove(), 2000);
     }
     // Method to toggle the power of the coffee machine. It checks the state of the power switch and updates the machine's state accordingly.
@@ -68,6 +68,7 @@ class CoffeeMachineSimulator {
         } else {
             this.status.textContent = 'Select your coffee';
             this.sendStatus('on');
+            document.getElementById('coffee_machine-popup').classList.add('show');
         }
         this.updateIndicator();
     }
@@ -82,6 +83,7 @@ class CoffeeMachineSimulator {
             this.status.textContent = 'Select your coffee';
             this.updateIndicator();
             this.sendStatus('on');
+            document.getElementById('coffee_machine-popup').classList.add('show');
             console.log('Coffee machine turned on');
         } else {
             console.log('Coffee machine already turned on');
@@ -110,7 +112,7 @@ class CoffeeMachineSimulator {
     updateIndicator() {
         try {
             // Check if the indicator element exists before trying to update it
-            if (!this.indicator){
+            if (!this.indicator) {
                 throw new Error('Indicator element not found');
             }
             
@@ -204,13 +206,13 @@ class CoffeeMachineSimulator {
         this.coffeeCup1.style.cursor = 'default';
         this.hand.style.display = 'block';
 
-        this.hand.style.left = '190px';
-        this.hand.style.top = '410px';
-        this.hand.style.transform = 'rotate(-70deg)';
+        this.hand.style.left = '50%';
+        this.hand.style.top = '350px';
+        this.hand.style.transform = 'translateX(-50%) rotate(-70deg)';
         await new Promise(resolve => setTimeout(resolve, 500));
 
         this.coffeeCup1.style.transform = 'translateY(-50px)';
-        this.hand.style.transform = 'translateY(-50px) rotate(-70deg)';
+        this.hand.style.transform = 'translateX(-50%) translateY(-50px) rotate(-70deg)';
         await new Promise(resolve => setTimeout(resolve, 500));
 
         this.hand.style.left = '340px';

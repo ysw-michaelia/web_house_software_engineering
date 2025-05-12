@@ -42,6 +42,7 @@ class LampSimulator {
         if (this.isOn) {
             this.lampShade.classList.add('on');
             this.light.classList.add('on');
+            document.getElementById('light-popup').classList.add('show');
         } else {
             this.lampShade.classList.remove('on');
             this.light.classList.remove('on');
