@@ -98,22 +98,21 @@
                 <div class="controls">
                     <div id="indicator" class="indicator"></div>
                     <label class="power-switch">
-                        <input type="checkbox" id="powerSwitch" checked>
+                        <input type="checkbox" id="powerSwitch">
                         <span class="slider"></span>
                     </label>
                 </div>
             </div>
             <div id="display" class="display_cm">
                 <div class="options">
-                    <div class="option" onclick="window.devices['coffee_machine'].selectCoffee('espresso')">Espresso</div>
-                    <div class="option" onclick="window.devices['coffee_machine'].selectCoffee('latte')">Latte</div>
-                    <div class="option" onclick="window.devices['coffee_machine'].selectCoffee('cappuccino')">Cappuccino</div>
-                    <div class="option" onclick="window.devices['coffee_machine'].selectCoffee('americano')">Americano</div>
-                    <div class="option" onclick="window.devices['coffee_machine'].selectCoffee('mocha')">Mocha</div>
-                    <div class="option" onclick="window.devices['coffee_machine'].selectCoffee('macchiato')">Macchiato</div>
-                    <div class="option" onclick="window.devices['coffee_machine'].selectCoffee('flatwhite')">Flat White</div>
-                    <div class="option" onclick="window.devices['coffee_machine'].selectCoffee('ristretto')">Ristretto</div>
-                </div>
+                    <div class="option" data-coffee="espresso">Espresso</div>
+                    <div class="option" data-coffee="latte">Latte</div>
+                    <div class="option" data-coffee="cappuccino">Cappuccino</div>
+                    <div class="option" data-coffee="americano">Americano</div>
+                    <div class="option" data-coffee="mocha">Mocha</div>
+                    <div class="option" data-coffee="macchiato">Macchiato</div>
+                    <div class="option" data-coffee="flatwhite">Flat White</div>
+                    <div class="option" data-coffee="ristretto">Ristretto</div>
             </div>
             <div id="status" class="status-bar"></div>
             <div class="nozzles">
@@ -127,7 +126,7 @@
             <div id="drip1" class="drip" style="display: none;"></div>
             <div id="hand" class="hand" style="display: none;"></div>
             <div class="tray"></div>
-            <audio id="brewSound" src="assets/brew.mp3"></audio>
+            <audio id="brewSound" src="assets/sound_effect/coffe_machine.mp3"></audio>
         </div>
     </div>
 

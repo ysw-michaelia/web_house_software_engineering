@@ -157,6 +157,7 @@ input:checked + .slider:before {
     font-size: 16px;
     text-align: center;
     margin-top: 10px;
+    z-index: 2;
 }
 
 .nozzles {
@@ -164,7 +165,7 @@ input:checked + .slider:before {
     justify-content: center;
     gap: 20px;
     position: absolute;
-    top: 350px;
+    top: 310px;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -186,8 +187,8 @@ input:checked + .slider:before {
 }
 
 .coffee-cup {
-    width: 80px;
-    height: 100px;
+    width: 70px;
+    height: 80px;
     background: linear-gradient(#fff, #f0f0f0);
     border: 2px solid #e0e0e0;
     border-radius: 0 0 20px 20px;

@@ -9,7 +9,7 @@ class CoffeeMachineSimulator {
         this.selectedCoffee = null;
         this.isBrewing = false;
         this.isReady = false;
-        this.isPoweredOn = true;
+        this.isPoweredOn = false;
         this.deviceId = null;
         this.display = document.getElementById('display');
         this.status = document.getElementById('status');
@@ -20,8 +20,17 @@ class CoffeeMachineSimulator {
         this.brewSound = document.getElementById('brewSound');
         this.indicator = document.getElementById('indicator');
         this.powerSwitch = document.getElementById('powerSwitch');
-        this.options = document.querySelectorAll('.option');
         this.steamInterval = null;
+
+        this.options = document.querySelectorAll('.option');
+        this.options.forEach(option => {
+            option.addEventListener('click', (event) => {
+                if (this.isPoweredOn && !this.isBrewing && !this.isReady) {
+                    const coffeeType = event.target.getAttribute('data-coffee');
+                    this.selectCoffee(coffeeType);
+                }
+            });
+        });
 
         this.coffeeCup1.onclick = () => this.takeCoffee();
         this.powerSwitch.addEventListener('change', () => this.togglePower());
@@ -206,8 +215,8 @@ class CoffeeMachineSimulator {
         this.coffeeCup1.style.cursor = 'default';
         this.hand.style.display = 'block';
 
-        this.hand.style.left = '50%';
-        this.hand.style.top = '350px';
+        this.hand.style.left = '65%';
+        this.hand.style.top = '300px';
         this.hand.style.transform = 'translateX(-50%) rotate(-70deg)';
         await new Promise(resolve => setTimeout(resolve, 500));
 
@@ -217,7 +226,7 @@ class CoffeeMachineSimulator {
 
         this.hand.style.left = '340px';
         this.hand.style.transform = 'translateY(-50px) rotate(-70deg)';
-        this.coffeeCup1.style.transform = 'translateX(150px) translateY(-50px)';
+        this.coffeeCup1.style.transform = 'translateX(200px) translateY(-60px)';
         await new Promise(resolve => setTimeout(resolve, 1000));
 
         this.hand.style.display = 'none';
