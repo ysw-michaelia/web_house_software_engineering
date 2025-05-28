@@ -1,156 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Device Simulator</title>
     <link rel="stylesheet" href="css/lamp.css" />
     <link rel="stylesheet" href="css/coffeeMaker.css" />
     <link rel="stylesheet" href="css/mediaPlayer.css" />
     <style>
-        .menu {
-            text-align: center;
-            margin: 20px;
-        }
-        .menu button {
-            padding: 10px 20px;
-            margin: 0 10px;
-            cursor: pointer;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-        .menu button:hover {
-            background: #0056b3;
-        }
-        .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            border: 1px solid #ccc;
-            padding: 20px;
-            z-index: 1000;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            overflow: visible; 
-        }
-        .popup.show {
-            display: block;
-        }
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
-        }
-    
-        #light-popup {
-            width: 300px;
-            height: 300px;
-            text-align: center;
-        }
-        #coffee_machine-popup {
-            width: 370px;
-            height: 470px; 
-        }
-        #mediaplayer-popup {
-            width: 380px; 
-            height: 400px; 
-            border-radius: 10px;
-            background: #f9f9f9; 
-        }
-    
-        .lamp-container, .coffee-machine, .media-player {
-            position: relative;
-            margin: 0 auto;
-        }
+      .menu {
+        text-align: center;
+        margin: 20px;
+      }
+      .menu button {
+        padding: 10px 20px;
+        margin: 0 10px;
+        cursor: pointer;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+      }
+      .menu button:hover {
+        background: #0056b3;
+      }
+      .popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        border: 1px solid #ccc;
+        padding: 20px;
+        z-index: 1000;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        overflow: visible;
+      }
+      .popup.show {
+        display: block;
+      }
+      .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+      }
+
+      #light-popup {
+        width: 300px;
+        height: 300px;
+        text-align: center;
+      }
+      #coffee_machine-popup {
+        width: 370px;
+        height: 470px;
+      }
+      #mediaplayer-popup {
+        width: 380px;
+        height: 400px;
+        border-radius: 10px;
+        background: #f9f9f9;
+      }
+
+      .lamp-container,
+      .coffee-machine,
+      .media-player {
+        position: relative;
+        margin: 0 auto;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Main menu -->
     <div class="menu">
-        <h1>Device Simulator</h1>
-        <button onclick="openPopup('light-popup')">Lamp</button>
-        <button onclick="openPopup('coffee_machine-popup')">Coffee Machine</button>
-        <button onclick="openPopup('mediaplayer-popup')">Media Player</button>
+      <h1>Device Simulator</h1>
+      <button onclick="openPopup('light-popup')">Lamp</button>
+      <button onclick="openPopup('coffee_machine-popup')">
+        Coffee Machine
+      </button>
+      <button onclick="openPopup('mediaplayer-popup')">Media Player</button>
     </div>
 
     <!-- Lamp -->
     <div id="light-popup" class="popup">
-        <span class="close-btn" onclick="closePopup('light-popup')">X</span>
-        <div class="lamp-container">
-            <div id="lampShade" class="lamp-shade"></div>
-            <div id="light" class="light"></div>
-            <div class="lamp-pole"></div>
-            <div class="lamp-base"></div>
-            <button id="lampToggleBtn" class="button">Toggle Lamp</button>
-        </div>
+      <span class="close-btn" onclick="closePopup('light-popup')">X</span>
+      <div class="lamp-container">
+        <div id="lampShade" class="lamp-shade"></div>
+        <div id="light" class="light"></div>
+        <div class="lamp-pole"></div>
+        <div class="lamp-base"></div>
+        <button id="lampToggleBtn" class="button">Toggle Lamp</button>
+      </div>
     </div>
 
     <!-- Coffee maker -->
     <div id="coffee_machine-popup" class="popup">
-        <span class="close-btn" onclick="closePopup('coffee_machine-popup')">X</span>
-        <div class="coffee-machine">
-            <div class="bean-hopper">
-                <div class="controls">
-                    <div id="indicator" class="indicator"></div>
-                    <label class="power-switch">
-                        <input type="checkbox" id="powerSwitch">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-            </div>
-            <div id="display" class="display_cm">
-                <div class="options">
-                    <div class="option" data-coffee="espresso">Espresso</div>
-                    <div class="option" data-coffee="latte">Latte</div>
-                    <div class="option" data-coffee="cappuccino">Cappuccino</div>
-                    <div class="option" data-coffee="americano">Americano</div>
-                    <div class="option" data-coffee="mocha">Mocha</div>
-                    <div class="option" data-coffee="macchiato">Macchiato</div>
-                    <div class="option" data-coffee="flatwhite">Flat White</div>
-                    <div class="option" data-coffee="ristretto">Ristretto</div>
-            </div>
-            <div id="status" class="status-bar"></div>
-            <div class="nozzles">
-                <div class="nozzle"></div>
-            </div>
-            <div class="coffee-cups">
-                <div id="coffeeCup1" class="coffee-cup" style="display: none;">
-                    <div id="coffeeFill1" class="coffee-fill"></div>
-                </div>
-            </div>
-            <div id="drip1" class="drip" style="display: none;"></div>
-            <div id="hand" class="hand" style="display: none;"></div>
-            <div class="tray"></div>
-            <audio id="brewSound" src="assets/sound_effect/coffe_machine.mp3"></audio>
+      <span class="close-btn" onclick="closePopup('coffee_machine-popup')"
+        >X</span
+      >
+      <div class="coffee-machine">
+        <div class="bean-hopper">
+          <div class="controls">
+            <div id="indicator" class="indicator"></div>
+            <label class="power-switch">
+              <input type="checkbox" id="powerSwitch" />
+              <span class="slider"></span>
+            </label>
+          </div>
         </div>
+        <div id="display" class="display_cm">
+          <div class="options">
+            <div class="option" data-coffee="espresso">Espresso</div>
+            <div class="option" data-coffee="latte">Latte</div>
+            <div class="option" data-coffee="cappuccino">Cappuccino</div>
+            <div class="option" data-coffee="americano">Americano</div>
+            <div class="option" data-coffee="mocha">Mocha</div>
+            <div class="option" data-coffee="macchiato">Macchiato</div>
+            <div class="option" data-coffee="flatwhite">Flat White</div>
+            <div class="option" data-coffee="ristretto">Ristretto</div>
+          </div>
+        </div>
+        <div id="status" class="status-bar"></div>
+        <div class="nozzles">
+          <div class="nozzle"></div>
+        </div>
+        <div class="coffee-cups">
+          <div id="coffeeCup1" class="coffee-cup" style="display: none">
+            <div id="coffeeFill1" class="coffee-fill"></div>
+          </div>
+        </div>
+        <div id="drip1" class="drip" style="display: none"></div>
+        <div id="hand" class="hand" style="display: none"></div>
+        <div class="tray"></div>
+        <audio
+          id="brewSound"
+          src="assets/sound_effect/coffe_machine.mp3"
+        ></audio>
+      </div>
     </div>
 
     <!-- Media Player -->
     <div id="mediaplayer-popup" class="popup">
-        <span class="close-btn" onclick="closePopup('mediaplayer-popup')">X</span>
-        <div class="media-player">
-            <div id="mediaPlayerDisplay" class="display">No song playing</div>
-            <div class="controls">
-                <button id="playPauseBtn" class="play-pause-btn"></button>
-                <div class="buttons">
-                    <button id="prevTrackBtn" class="prev-btn"></button>
-                    <button id="nextTrackBtn" class="next-btn"></button>
-                </div>
-                <div id="progressContainer" class="progress-container">
-                    <div id="progress" class="progress"></div>
-                </div>
-                <div id="time" class="time">0:00 / 0:00</div>
-                <div class="volume-container">
-                    <input type="range" id="volume" class="volume" min="0" max="1" step="0.01" value="1">
-                </div>
-            </div>
-            <audio id="audio"></audio>
+      <span class="close-btn" onclick="closePopup('mediaplayer-popup')">X</span>
+      <div class="media-player">
+        <div id="mediaPlayerDisplay" class="display">No song playing</div>
+        <div class="controls">
+          <button id="playPauseBtn" class="play-pause-btn"></button>
+          <div class="buttons">
+            <button id="prevTrackBtn" class="prev-btn"></button>
+            <button id="nextTrackBtn" class="next-btn"></button>
+          </div>
+          <div id="progressContainer" class="progress-container">
+            <div id="progress" class="progress"></div>
+          </div>
+          <div id="time" class="time">0:00 / 0:00</div>
+          <div class="volume-container">
+            <input
+              type="range"
+              id="volume"
+              class="volume"
+              min="0"
+              max="1"
+              step="0.01"
+              value="1"
+            />
+          </div>
         </div>
+        <audio id="audio"></audio>
+      </div>
     </div>
 
     <!-- Scripts for Device Interactions -->
@@ -159,13 +177,13 @@
     <script src="js/mediaPlayer.js"></script>
     <script src="js/coffeeMaker.js"></script>
     <script>
-        function openPopup(popupId) {
-            document.getElementById(popupId).classList.add('show');
-        }
+      function openPopup(popupId) {
+        document.getElementById(popupId).classList.add("show");
+      }
 
-        function closePopup(popupId) {
-            document.getElementById(popupId).classList.remove('show');
-        }
+      function closePopup(popupId) {
+        document.getElementById(popupId).classList.remove("show");
+      }
     </script>
-</body>
+  </body>
 </html>
