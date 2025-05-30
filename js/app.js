@@ -69,6 +69,10 @@ ws.onmessage = (event) => {
                         document.getElementById(`${type}-popup`).classList.add('show');
                     } else if (status === 'off') {
                         device.turnOff();
+                    } else if (status === 'nextTrack') {
+                        device.nextTrack();
+                    } else if (status === 'prevTrack') {
+                        device.prevTrack();
                     }
                     break;
                 }
